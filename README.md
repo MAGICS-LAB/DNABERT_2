@@ -89,8 +89,31 @@ Codes for pre-training is coming soon.
 
 ## 6. Evaluation
 
+### 6.1 Evaluate models on GUE
+Please first download the GUE dataset from [here](https://drive.google.com/file/d/1GRtbzTe3UXYF1oW27ASNhYX3SZ16D7N2/view?usp=sharing). Then run the scripts to evaluate on all the tasks. 
+
+Current script is set to use `DataParallel` for training on 4 GPUs. If you have different number of GPUs, please change the `per_device_train_batch_size` and `gradient_accumulation_steps` accordingly to adjust the global batch size to 32 to replicate the results in the paper. If you would like to perform distributed multi-gpu training (e.g., with `DistributedDataParallel`), simply change `python` to `torchrun --nproc_per_node ${n_gpu}`.
 
 
+```
+export DATA_PATH=/path/to/GUE #(e.g., /home/user)
+cd finetune
+
+# Evaluate DNABERT-2 on GUE
+sh scripts/run_dnabert2.sh DATA_PATH
+
+# Evaluate DNABERT (e.g., DNABERT with 3-mer) on GUE
+# 3 for 3-mer, 4 for 4-mer, 5 for 5-mer, 6 for 6-mer
+sh scripts/run_dnabert1.sh DATA_PATH 3
+
+# Evaluate Nucleotide Transformers on GUE
+# 0 for 500m-1000g, 1 for 500m-human-ref, 2 for 2.5b-1000g, 3 for 2.5b-multi-species
+sh scripts/run_nt.sh DATA_PATH 0
+
+```
+
+### 6.2 Evaluate on your own datasets
+Comming soon.
 
 
 ## 7. Citation
