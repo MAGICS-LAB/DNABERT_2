@@ -30,7 +30,7 @@ DNABERT-2 is a foundation model trained on large-scale multi-species genome that
 
 ## 2. Model and Data
 
-The pre-trained models is available at Huggingface as `zhihan1996/DNABERT-2-117M`. [Link]().
+The pre-trained models is available at Huggingface as `zhihan1996/DNABERT-2-117M`. [Link](https://huggingface.co/zhihan1996/DNABERT-2-117M).
 
 
 
