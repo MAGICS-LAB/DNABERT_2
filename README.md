@@ -124,7 +124,7 @@ If you have any question regarding our paper or codes, please feel free to start
 
 If you use DNABERT-2 in your work, please kindly cite our paper:
 
-**DNABERT-2 **
+**DNABERT-2**
 
 ```
 @misc{zhou2023dnabert2,
