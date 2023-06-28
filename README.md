@@ -1,10 +1,9 @@
 # DNABERT-2: Efficient Foundation Model and Benchmark for Multi-Species Genome
 
-The official implementation of our paper
+The repo contains: 
 
-
-
-DNABERT-2: Efficient Foundation Model and Benchmark for Multi-Species Genome
+1. The official implementation of [DNABERT-2: Efficient Foundation Model and Benchmark for Multi-Species Genome](https://arxiv.org/abs/2306.15006)
+2. Genome Understanding Evaluation (GUE): a comprehensize benchmark containing 28 datasets for multi-species genome understanding benchmark.
 
 
 
