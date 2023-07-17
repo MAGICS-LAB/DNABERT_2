@@ -52,6 +52,13 @@ GUE is a comprehensive benchmark for genome understanding consising of $28$ dist
     # create and activate virtual python environment
     conda create -n dna python=3.8
     conda activate dna
+
+    # (optional if you would like to use flash attention)
+    # install triton from source
+    git clone https://github.com/openai/triton.git;
+    cd triton/python;
+    pip install cmake; # build-time dependency
+    pip install -e .
     
     # install required packages
     python3 -m pip install -r requirements.txt
