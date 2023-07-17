@@ -187,20 +187,37 @@ class DataCollatorForSupervisedDataset(object):
 Manually calculate the accuracy, f1, matthews_correlation, precision, recall with sklearn.
 """
 def calculate_metric_with_sklearn(logits: np.ndarray, labels: np.ndarray):
+    if logits.ndim == 3:
+        # Reshape logits to 2D if needed
+        logits = logits.reshape(-1, logits.shape[-1])
     predictions = np.argmax(logits, axis=-1)
+    valid_mask = labels != -100  # Exclude padding tokens (assuming -100 is the padding token ID)
+    valid_predictions = predictions[valid_mask]
+    valid_labels = labels[valid_mask]
     return {
-        "accuracy": sklearn.metrics.accuracy_score(labels, predictions),
-        "f1": sklearn.metrics.f1_score(labels, predictions, average="macro", zero_division=0),
-        "matthews_correlation": sklearn.metrics.matthews_corrcoef(labels, predictions),
-        "precision": sklearn.metrics.precision_score(labels, predictions, average="macro", zero_division=0),
-        "recall": sklearn.metrics.recall_score(labels, predictions, average="macro", zero_division=0),
+        "accuracy": sklearn.metrics.accuracy_score(valid_labels, valid_predictions),
+        "f1": sklearn.metrics.f1_score(
+            valid_labels, valid_predictions, average="macro", zero_division=0
+        ),
+        "matthews_correlation": sklearn.metrics.matthews_corrcoef(
+            valid_labels, valid_predictions
+        ),
+        "precision": sklearn.metrics.precision_score(
+            valid_labels, valid_predictions, average="macro", zero_division=0
+        ),
+        "recall": sklearn.metrics.recall_score(
+            valid_labels, valid_predictions, average="macro", zero_division=0
+        ),
     }
+
 
 """
 Compute metrics used for huggingface trainer.
-"""
+""" 
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
+    if isinstance(logits, tuple):  # Unpack logits if it's a tuple
+        logits = logits[0]
     return calculate_metric_with_sklearn(logits, labels)
 
 
