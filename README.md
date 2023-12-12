@@ -14,7 +14,7 @@ The repo contains:
 - [3. Setup Environment](#3-setup-environment)
 - [4. Quick Start](#4-quick-start)
 - [5. Pre-Training](#5-pre-training)
-- [6. Evaluation](#6-evaluation)
+- [6. Finetune](#6-finetune)
 - [7. Citation](#7-citation)
 
 
@@ -52,6 +52,13 @@ GUE is a comprehensive benchmark for genome understanding consising of $28$ dist
     # create and activate virtual python environment
     conda create -n dna python=3.8
     conda activate dna
+    
+    # (optional if you would like to use flash attention)
+    # install triton from source
+    git clone https://github.com/openai/triton.git;
+    cd triton/python;
+    pip install cmake; # build-time dependency
+    pip install -e .
     
     # install required packages
     python3 -m pip install -r requirements.txt
@@ -100,7 +107,7 @@ Codes for pre-training is coming soon.
 
 
 
-## 6. Evaluation
+## 6. Finetune
 
 ### 6.1 Evaluate models on GUE
 Please first download the GUE dataset from [here](https://drive.google.com/file/d/1GRtbzTe3UXYF1oW27ASNhYX3SZ16D7N2/view?usp=sharing). Then run the scripts to evaluate on all the tasks. 
@@ -125,8 +132,89 @@ sh scripts/run_nt.sh DATA_PATH 0
 
 ```
 
-### 6.2 Evaluate on your own datasets
-Comming soon.
+### 6.2 Fine-tune DNABERT2 on your own datasets
+
+Here we provide an example of fine-tuning DNABERT2 on your own datasets.
+
+
+
+#### 6.2.1 Format your dataset
+
+First, please generate 3 `csv` files from your dataset: `train.csv`, `dev.csv`, and `test.csv`. In the training process, the model is trained on `train.csv` and is evaluated on the `dev.csv` file. After the training if finished, the checkpoint with the smallest loss on the `dev.csv `file is loaded and be evaluated on `test.csv`. If you do not have a validation set, please just make the `dev.csv` and `test.csv` the same. 
+
+
+
+Please see the `sample_data` folder for an sample of data format. Each file should be in the same format, with the first row as document head named `sequence, label`. Each following row should contain a DNA sequence and a numerical label concatenated by a `,` (e.g., `ACGTCAGTCAGCGTACGT, 1 `).
+
+
+
+Then, you are able to finetune DNABERT-2 on your own dataset with the following code:
+
+
+
+```
+cd finetune
+
+export DATA_PATH=$path/to/data/folder  # e.g., ./sample_data
+export MAX_LENGTH=100 # Please set the number as 0.25 * your sequence length. 
+											# e.g., set it as 250 if your DNA sequences have 1000 nucleotide bases
+											# This is because the tokenized will reduce the sequence length by about 5 times
+export LR=3e-5
+
+# Training use DataParallel
+python train.py \
+    --model_name_or_path zhihan1996/DNABERT-2-117M \
+    --data_path  ${DATA_PATH} \
+    --kmer -1 \
+    --run_name DNABERT2_${DATA_PATH} \
+    --model_max_length ${MAX_LENGTH} \
+    --per_device_train_batch_size 8 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 1 \
+    --learning_rate ${LR} \
+    --num_train_epochs 5 \
+    --fp16 \
+    --save_steps 200 \
+    --output_dir output/dnabert2 \
+    --evaluation_strategy steps \
+    --eval_steps 200 \
+    --warmup_steps 50 \
+    --logging_steps 100 \
+    --overwrite_output_dir True \
+    --log_level info \
+    --find_unused_parameters False
+    
+# Training use DistributedDataParallel (more efficient)
+export num_gpu=4 # please change the value based on your setup
+
+torchrun --nproc-per-node=${num_gpu} train.py \
+    --model_name_or_path zhihan1996/DNABERT-2-117M \
+    --data_path  ${DATA_PATH} \
+    --kmer -1 \
+    --run_name DNABERT2_${DATA_PATH} \
+    --model_max_length ${MAX_LENGTH} \
+    --per_device_train_batch_size 8 \
+    --per_device_eval_batch_size 16 \
+    --gradient_accumulation_steps 1 \
+    --learning_rate ${LR} \
+    --num_train_epochs 5 \
+    --fp16 \
+    --save_steps 200 \
+    --output_dir output/dnabert2 \
+    --evaluation_strategy steps \
+    --eval_steps 200 \
+    --warmup_steps 50 \
+    --logging_steps 100 \
+    --overwrite_output_dir True \
+    --log_level info \
+    --find_unused_parameters False
+```
+
+
+
+
+
+
 
 
 ## 7. Citation

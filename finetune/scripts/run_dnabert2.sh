@@ -2,6 +2,7 @@
 
 data_path=$1
 lr=2e-5
+
 echo "The provided data_path is $data_path"
 
 for seed in 42
