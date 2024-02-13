@@ -187,7 +187,7 @@ python train.py \
 # Training use DistributedDataParallel (more efficient)
 export num_gpu=4 # please change the value based on your setup
 
-torchrun --nproc-per-node=${num_gpu} train.py \
+torchrun --nproc_per_node=${num_gpu} train.py \
     --model_name_or_path zhihan1996/DNABERT-2-117M \
     --data_path  ${DATA_PATH} \
     --kmer -1 \
