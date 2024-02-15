@@ -19,6 +19,10 @@ The repo contains:
 
 
 
+## Update (2024/02/14)
+
+We publish DNABERT-S,  a foundation model based on DNABERT-2 specifically designed for generating DNA embedding that naturally clusters and segregates genome of different species in the embedding space. Please check it out [here](https://github.com/Zhihan1996/DNABERT_S) if you are interested.
+
 
 
 ## 1. Introduction
