@@ -1,5 +1,5 @@
 einops
-transformers=4.29.2
+transformers==4.29.2
 peft
 omegaconf
 torch
