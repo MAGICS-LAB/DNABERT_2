@@ -199,9 +199,6 @@ def compute_metrics(eval_pred):
     valid_predictions = predictions[valid_mask]
     valid_labels = labels[valid_mask]
 
-    pred_prob = softmax(logits, axis=1)
-    pred_prob = pred_prob[:,[1]].flatten()
-
     return {
         "accuracy": sklearn.metrics.accuracy_score(valid_labels, valid_predictions),
         "f1": sklearn.metrics.f1_score(
@@ -215,12 +212,6 @@ def compute_metrics(eval_pred):
         ),
         "recall": sklearn.metrics.recall_score(
             valid_labels, valid_predictions, average="macro", zero_division=0
-        ),
-        "auPRCs": sklearn.metrics.average_precision_score(
-            y_true=valid_labels, y_score=pred_prob
-        ),
-        "auROC": sklearn.metrics.roc_auc_score(
-            y_true=valid_labels, y_score=pred_prob
         )
     }
 
