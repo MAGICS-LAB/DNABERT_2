@@ -298,7 +298,8 @@ def train():
                                    compute_metrics=compute_metrics,
                                    train_dataset=train_dataset,
                                    eval_dataset=val_dataset,
-                                   data_collator=data_collator)
+                                   data_collator=data_collator,
+                                   preprocess_logits_for_metrics=preprocess_logits_for_metrics)
     trainer.train()
 
     if training_args.save_model:
