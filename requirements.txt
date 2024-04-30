@@ -1,7 +1,8 @@
-einops
+einops==0.6.1
 transformers==4.29.2
-peft
-omegaconf
-torch
-evaluate
-accelerate
+peft==0.3.0
+omegaconf==2.3.0
+torch==1.13.1
+evaluate==0.4.0
+accelerate==0.20.3
+scikit-learn==1.2.2
