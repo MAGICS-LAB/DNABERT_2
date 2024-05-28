@@ -105,7 +105,11 @@ print(embedding_max.shape) # expect to be 768
 
 ## 5. Pre-Training
 
-Codes for pre-training is coming soon.
+We used and slightly modified the MosaicBERT implementation for DNABERT-2 https://github.com/mosaicml/examples/tree/main/examples/benchmarks/bert . You should be able to replicate the model training following the instructions.
+
+Or you can use the run_mlm.py at https://github.com/huggingface/transformers/tree/main/examples/pytorch/language-modeling by importing the BertModelForMaskedLM from https://huggingface.co/zhihan1996/DNABERT-2-117M/blob/main/bert_layers.py. It should produce a very similar model.
+
+The training data is available [here](https://drive.google.com/file/d/1dSXJfwGpDSJ59ry9KAp8SugQLK35V83f/view?usp=sharing.). 
 
 
 
