@@ -39,7 +39,7 @@ The pre-trained models is available at Huggingface as `zhihan1996/DNABERT-2-117M
 
 ### 2.1 GUE: Genome Understanding Evaluation
 
-GUE is a comprehensive benchmark for genome understanding consising of $28$ distinct datasets across $7$ tasks and $4$ species. GUE can be download [here](https://drive.google.com/file/d/1GRtbzTe3UXYF1oW27ASNhYX3SZ16D7N2/view?usp=sharing). Statistics and model performances on GUE is shown as follows:
+GUE is a comprehensive benchmark for genome understanding consising of $28$ distinct datasets across $7$ tasks and $4$ species. GUE can be download [here]([https://drive.google.com/file/d/1GRtbzTe3UXYF1oW27ASNhYX3SZ16D7N2/view?usp=sharing](https://drive.google.com/file/d/1uOrwlf07qGQuruXqGXWMpPn8avBoW7T-/view?usp=sharing)). Statistics and model performances on GUE is shown as follows:
 
 
 
