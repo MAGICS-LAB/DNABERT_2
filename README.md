@@ -76,13 +76,21 @@ GUE is a comprehensive benchmark for genome understanding consising of $28$ dist
 Our model is easy to use with the [transformers](https://github.com/huggingface/transformers) package.
 
 
-To load the model from huggingface:
+To load the model from huggingface (version 4.28):
 ```python
 import torch
 from transformers import AutoTokenizer, AutoModel
 
 tokenizer = AutoTokenizer.from_pretrained("zhihan1996/DNABERT-2-117M", trust_remote_code=True)
 model = AutoModel.from_pretrained("zhihan1996/DNABERT-2-117M", trust_remote_code=True)
+```
+
+To load the model from huggingface (version > 4.28):
+```python
+from transformers.models.bert.configuration_bert import BertConfig
+
+config = BertConfig.from_pretrained("zhihan1996/DNABERT-2-117M")
+model = AutoModel.from_pretrained("zhihan1996/DNABERT-2-117M", trust_remote_code=True, config=config)
 ```
 
 
