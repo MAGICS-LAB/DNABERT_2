@@ -4,7 +4,7 @@ import copy
 import json
 import logging
 from dataclasses import dataclass, field
-from typing import Optional, Dict, Sequence, Tuple, List
+from typing import Any, Optional, Dict, Sequence, Tuple, List, Union
 
 import torch
 import transformers
@@ -186,11 +186,7 @@ class DataCollatorForSupervisedDataset(object):
 """
 Manually calculate the accuracy, f1, matthews_correlation, precision, recall with sklearn.
 """
-def calculate_metric_with_sklearn(logits: np.ndarray, labels: np.ndarray):
-    if logits.ndim == 3:
-        # Reshape logits to 2D if needed
-        logits = logits.reshape(-1, logits.shape[-1])
-    predictions = np.argmax(logits, axis=-1)
+def calculate_metric_with_sklearn(predictions: np.ndarray, labels: np.ndarray):
     valid_mask = labels != -100  # Exclude padding tokens (assuming -100 is the padding token ID)
     valid_predictions = predictions[valid_mask]
     valid_labels = labels[valid_mask]
@@ -210,15 +206,24 @@ def calculate_metric_with_sklearn(logits: np.ndarray, labels: np.ndarray):
         ),
     }
 
+# from: https://discuss.huggingface.co/t/cuda-out-of-memory-when-using-trainer-with-compute-metrics/2941/13
+def preprocess_logits_for_metrics(logits:Union[torch.Tensor, Tuple[torch.Tensor, Any]], _):
+    if isinstance(logits, tuple):  # Unpack logits if it's a tuple
+        logits = logits[0]
+
+    if logits.ndim == 3:
+        # Reshape logits to 2D if needed
+        logits = logits.reshape(-1, logits.shape[-1])
+
+    return torch.argmax(logits, dim=-1)
+
 
 """
 Compute metrics used for huggingface trainer.
 """ 
 def compute_metrics(eval_pred):
-    logits, labels = eval_pred
-    if isinstance(logits, tuple):  # Unpack logits if it's a tuple
-        logits = logits[0]
-    return calculate_metric_with_sklearn(logits, labels)
+    predictions, labels = eval_pred
+    return calculate_metric_with_sklearn(predictions, labels)
 
 
 
@@ -278,6 +283,7 @@ def train():
     trainer = transformers.Trainer(model=model,
                                    tokenizer=tokenizer,
                                    args=training_args,
+                                   preprocess_logits_for_metrics=preprocess_logits_for_metrics,
                                    compute_metrics=compute_metrics,
                                    train_dataset=train_dataset,
                                    eval_dataset=val_dataset,
