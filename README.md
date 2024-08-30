@@ -27,7 +27,7 @@ We publish DNABERT-S,  a foundation model based on DNABERT-2 specifically design
 
 ## 1. Introduction
 
-DNABERT-2 is a foundation model trained on large-scale multi-species genome that achieves the state-of-the-art performanan on $28$ tasks of the GUE benchmark. It replaces k-mer tokenization with BPE, positional embedding with Attention with Linear Bias (ALiBi), and incorporate other techniques to improve the efficiency and effectiveness of DNABERT.
+DNABERT-2 is a foundation model trained on large-scale multi-species genome that achieves the state-of-the-art performance on $28$ tasks of the GUE benchmark. It replaces k-mer tokenization with BPE, positional embedding with Attention with Linear Bias (ALiBi), and incorporate other techniques to improve the efficiency and effectiveness of DNABERT.
 
 
 
