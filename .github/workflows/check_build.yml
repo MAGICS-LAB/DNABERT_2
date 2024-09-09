@@ -1,0 +1,24 @@
+# Checks if the build works, 
+# by installing the requirements
+# and then running the example code
+
+name: Check build
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check_build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: install required packages
+        run: python3 -m pip install -r requirements.txt
+
+      - name: run example code shown in README
+        run: python3 .github/workflows/example_huggingface_v4_28.py
