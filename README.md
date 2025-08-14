@@ -126,7 +126,7 @@ The training data is available [here](https://drive.google.com/file/d/1dSXJfwGpD
 ## 6. Finetune
 
 ### 6.1 Evaluate models on GUE
-Please first download the GUE dataset from [here](https://drive.google.com/file/d/1GRtbzTe3UXYF1oW27ASNhYX3SZ16D7N2/view?usp=sharing). Then run the scripts to evaluate on all the tasks. 
+Please first download the GUE dataset from [here](https://drive.google.com/file/d/1uOrwlf07qGQuruXqGXWMpPn8avBoW7T-/view?usp=sharing). Then run the scripts to evaluate on all the tasks. 
 
 Current script is set to use `DataParallel` for training on 4 GPUs. If you have different number of GPUs, please change the `per_device_train_batch_size` and `gradient_accumulation_steps` accordingly to adjust the global batch size to 32 to replicate the results in the paper. If you would like to perform distributed multi-gpu training (e.g., with `DistributedDataParallel`), simply change `python` to `torchrun --nproc_per_node ${n_gpu}`.
 
